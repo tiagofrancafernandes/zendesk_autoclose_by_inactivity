@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Opções</title>
+</head>
+
+<body>
+    <div style="margin-left:auto;margin-right:auto;margin-top: 10vh;">
+        <label for="zd_close_time" style="width:100%;font-size: 0.8rem;">
+            Intervalo de tempo <br>
+            <small><em>Intervalo de tempo (em minutos) entre a busca por chats fechados</em></small>:
+            <input type="number" id="zd_close_time" min="0" max="60"
+                style="width: 50%;height: 23vh;cursor: pointer;margin-top: 3vh;margin-bottom: 3vh;margin-left: 4%;margin-right: 2%;text-align: center;font-size: 1.2rem;">
+        </label>
+
+        <em>Tempo atual:
+            <span id="stored_zd_close_time">1</span>
+        </em>
+
+        <div id="status"></div>
+
+        <div id="save" style="margin-top:10px;">
+            <button id="save" style="width: 40%;height: 27vh;cursor: pointer;margin-left: 10%;margin-right: auto;">Salvar</button>
+        </div>
+    </div>
+    <script src="options.js"></script>
+</body>
+
+</html>
