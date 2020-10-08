@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zendesk Autoclose</title>
+</head>
+<body>
+
+<button onclick="startClose()">Fechar Chat</button>
+    
+<!-- Start of pontomais Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=c9ded153-500e-4348-8074-b45ddd839c88"> </script>
+<!-- End of pontomais Zendesk Widget script -->
+<script>
+
+function startClose(alert_msg = null)
+{
+    alert_msg = alert_msg != null ? alert_msg : "Chat encerrado por inatividade. \nFique à vontade para nos contactar sempre que precisar.\n :\)";
+    var widget = document.querySelectorAll('iframe#webWidget');
+
+    if(widget.length > 0)
+    {
+        var menu_btn    = document.querySelectorAll('iframe#webWidget')[0].contentWindow.document.querySelectorAll('button[aria-label="Encerrar chat"]');
+
+        if(menu_btn.length > 0)
+        {
+            if(menu_btn[0].disabled)
+            {
+                return;
+            }else{
+                menu_btn[0].click();
+
+                var close_item  = document.querySelectorAll('iframe#webWidget')[0].contentWindow.document.querySelectorAll('button[aria-label="Encerrar"]');
+
+                if(close_item.length > 0){
+                    close_item[0].click();
+                }
+                
+                document.querySelector('iframe#webWidget').contentWindow.document.querySelector('textarea').value = '-- Encerrado por inatividade --';
+
+
+                document.querySelector('iframe#webWidget').contentWindow.document.querySelector('button[aria-label="Classificar este chat como bom"]').click();
+                document.querySelector('iframe#webWidget').contentWindow.document.querySelector('[data-garden-id="forms.textarea"]').value = '-- Encerrado por inatividade --';
+                document.querySelector('iframe#webWidget').contentWindow.document.querySelector('[data-garden-id="forms.textarea"]').innerHTML = '-- Encerrado por inatividade --';
+                document.querySelector('iframe#webWidget').contentWindow.document.querySelector('button[data-garden-id="buttons.button"][aria-label="Enviar"]').click();
+
+                alert(alert_msg);
+            }
+        }
+    } 
+}
+
+(function () {
+    var minutes = true; // true = minutes; false = seconds
+    var interval = minutes ? 60000 : 1000;
+    var IDLE_TIMEOUT = 5; // 10 seconds in this example
+    var idleCounter = 0;
+
+    console.log('O chat se encerrará após ' + IDLE_TIMEOUT + (minutes ? ' minutos ' : ' segundos ') + 'de inatividade');
+
+    window.onmousemove = window.onkeypress = function () {
+        idleCounter = 0;
+    };
+
+    window.setInterval(function () {
+        window.onmousemove = document.onmousemove = window.onkeypress = document.onkeypress = function () {
+            idleCounter = 0;
+        };
+
+        if (++idleCounter >= IDLE_TIMEOUT)
+        {
+            console.log('Fechando chat após ' + idleCounter + (minutes ? ' minutos ' : ' segundos ') + 'de inatividade');
+            startClose();
+            idleCounter = 0;
+        }
+    }, interval);
+}());
+
+/**
+* INICIO Lado agente
+
+//Adiciona tag à um atentimento (precisa que o atendimento esteja ativo)
+function addTagAoAtendimento(tag_name)
+{
+    // document.querySelector('div[data-test-id="Optionteste_dev"]').click();
+    document.querySelector('div[data-test-id="Option'+tag_name+'"]').click();
+
+    //uso:
+    //addTagAoAtendimento('minha_tag');
+}
+
+function fechaChatsEncerrados()
+{
+    var lista_chats = document
+    .querySelectorAll('div.title_controls button.chrome.round.button.meshim_dashboard_components_widgets_RoundButton.dark:last-child');
+
+    lista_chats.forEach(function(v, k){
+        
+      if(document
+      .querySelectorAll('div.title_controls button.chrome.round.button.meshim_dashboard_components_widgets_RoundButton.dark:last-child')[k]
+      .classList.contains('active') != true)
+        {
+            document.querySelectorAll('div.title_controls button.chrome.round.button.meshim_dashboard_components_widgets_RoundButton.dark:last-child')[k].click();
+        }
+
+    });
+}
+
+(function () {
+    var minutes = true; // true = minutes; false = seconds
+    var interval = minutes ? 60000 : 1000;
+    var IDLE_TIMEOUT = 1; // 10 seconds in this example
+    var idleCounter = 0;
+
+    window.onmousemove = window.onkeypress = function () {
+        idleCounter = 0;
+    };
+
+    window.setInterval(function () {
+        window.onmousemove = document.onmousemove = window.onkeypress = document.onkeypress = function () {
+            idleCounter = 0;
+        };
+
+        if (++idleCounter >= IDLE_TIMEOUT)
+        {
+            console.log('Iniciando busca por chats encerrados');
+            fechaChatsEncerrados();
+            idleCounter = 0;
+        }
+    }, interval);
+}());
+
+/* FIM Lado agente */
+
+</script>
+</body>
+</html>
