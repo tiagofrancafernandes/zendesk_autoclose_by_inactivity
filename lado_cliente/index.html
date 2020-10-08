@@ -8,6 +8,8 @@
 <body>
 
 <button onclick="startClose()">Fechar Chat</button>
+
+<button onclick="downloadExtension()" style=" margin-left: 40%; ">Baixar a extensao (Agente)</button>
     
 <!-- Start of pontomais Zendesk Widget script -->
 <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=c9ded153-500e-4348-8074-b45ddd839c88"> </script>
@@ -76,6 +78,11 @@ function startClose(alert_msg = null)
         }
     }, interval);
 }());
+
+function downloadExtension()
+{
+  window.open('https://github.com/tiagofrancafernandes/zendesk_autoclose_by_inactivity/releases');
+}
 
 /**
 * INICIO Lado agente
