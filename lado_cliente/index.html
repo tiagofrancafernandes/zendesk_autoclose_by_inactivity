@@ -149,9 +149,9 @@ function startClose(alert_msg = null, send_message_to_agent = null)
 }
 
 (function () {
-    var minutes = false; // true = minutes; false = seconds
+    var minutes = true; // true = minutes; false = seconds
     var interval = minutes ? 60000 : 1000;
-    var IDLE_TIMEOUT = 60; // 10 seconds if minutes=false
+    var IDLE_TIMEOUT = 4; // 10 seconds if minutes=false
     var idleCounter = 0;
     var HALF_IDLE_TIMEOUT = IDLE_TIMEOUT / 2;
     HALF_IDLE_TIMEOUT = HALF_IDLE_TIMEOUT.toFixed();    
