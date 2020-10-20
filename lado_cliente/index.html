@@ -149,12 +149,12 @@ function startClose(alert_msg = null, send_message_to_agent = null)
 }
 
 (function () {
-    var minutes = true; // true = minutes; false = seconds
+    var minutes = false; // true = minutes; false = seconds
     var interval = minutes ? 60000 : 1000;
-    var IDLE_TIMEOUT = 10; // 10 seconds if minutes=false
+    var IDLE_TIMEOUT = 60; // 10 seconds if minutes=false
     var idleCounter = 0;
     var HALF_IDLE_TIMEOUT = IDLE_TIMEOUT / 2;
-    HALF_IDLE_TIMEOUT = HALF_IDLE_TIMEOUT.toFixed();
+    HALF_IDLE_TIMEOUT = HALF_IDLE_TIMEOUT.toFixed();    
 
     console.log('O chat se encerrará após ' + IDLE_TIMEOUT + (minutes ? ' minutos ' : ' segundos ') + 'de inatividade');
 
@@ -164,15 +164,35 @@ function startClose(alert_msg = null, send_message_to_agent = null)
     };
 
     window.setInterval(function () {
-        window.onmousemove = document.onmousemove = window.onkeypress = document.onkeypress = function () {
-            idleCounter = 0;
-        };
+        // console.log('idleCounter: ' + idleCounter, 'HALF_IDLE_TIMEOUT: ' + HALF_IDLE_TIMEOUT);
+        if (idleCounter == HALF_IDLE_TIMEOUT)
+        {
+            console.log('metade do tempo');
 
+            var the_agent_was_the_last = lastToSendMessage('messageAgent-');//Se o agente foi o ultimo a escrever
+
+            if(the_agent_was_the_last)
+            {
+                toggleMute(false);
+                zdCloseNotification();
+            }
+            else
+                console.log('o agente NÃO foi o ultimo a escrever');
+        }
+    },1000);
+
+    window.setInterval(function () {
         if(hasChangeOnChat())
         {
             console.log('mudança no chat. Zerando o contador');
             idleCounter = 0;
         }
+    }, 1000);
+
+    window.setInterval(function () {
+        window.onmousemove = document.onmousemove = window.onkeypress = document.onkeypress = function () {
+            idleCounter = 0;
+        };
 
         if (++idleCounter >= IDLE_TIMEOUT)
         {
@@ -183,16 +203,7 @@ function startClose(alert_msg = null, send_message_to_agent = null)
             startClose(null, message_to_agent);
             idleCounter = 0;
         }else{
-            // console.log('idleCounter: ' + idleCounter, 'HALF_IDLE_TIMEOUT: ' + HALF_IDLE_TIMEOUT);
-            if (idleCounter == HALF_IDLE_TIMEOUT)
-            {
-                console.log('metade do tempo');
-
-                var the_agent_was_the_last = lastToSendMessage('messageAgent-');//Se o agente foi o ultimo a escrever
-
-                if(the_agent_was_the_last)
-                    zdCloseNotification();
-            }
+            //
         }
 
     }, interval);
@@ -206,6 +217,9 @@ function downloadExtension()
 
 document.addEventListener('DOMContentLoaded', function() {
     hasChangeOnChat();
+    toggleMute(true);
+    zdCloseNotification();
+    toggleMute(false);
 });
 
 </script>
