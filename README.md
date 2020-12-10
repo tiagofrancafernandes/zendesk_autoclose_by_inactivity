@@ -1,5 +1,7 @@
 ### Zendesk Autoclose by Inactivity
 
+###### [Autoclose Zendesk Chats - Chrome store](https://chrome.google.com/webstore/detail/autoclose-zendesk-chats/aeokmoihelbkajigpildainifmdbmnmi)
+
 ### [EN]
 **Customer side:** 
 End Zendesk chat after X minutes and <br>
